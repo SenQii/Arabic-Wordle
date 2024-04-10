@@ -1,5 +1,4 @@
 import random
-import tkinter as tk
 
 
 class FontColor:
@@ -36,25 +35,9 @@ class Style:
     RESET = '\033[0m'
 
 
-
 last_word = ""
 tries = 5
 can_attempt = True
-
-
-# def main():
-#     main_Screen = tk.Tk()
-#     main_Screen.title("gg")
-#     main_Screen.geometry('400x600')
-#
-#     btn = tk.Button(
-#         text="enter",
-#         fg="blue",
-#         bd='5',
-#         command=main_Screen.destroy
-#     )
-#     btn.pack()
-#     main_Screen.mainloop()
 
 
 words_length = {
@@ -95,13 +78,13 @@ def read_word():
 
 # user has 6 hearts
 def run(word):
-    Try = 1
+    trys = 1
     while can_attempt:
         print(Style.RESET_ALL + "===========================")
-        print(f"المحاولة {Try}")
+        print(f"المحاولة {trys}")
         guess = input()
 
-        # make sure his word == length of the right word
+        # check for guess length & lang
         if len(guess) != len(word):
             print("الأطوال غير متطابقة")
             continue
@@ -119,11 +102,11 @@ def run(word):
                 else:
                     print(FontColor.GREY + guess[letter], end="")
             print()
-            Try += 1
+            trys += 1
 
-            if Try  == tries:
-                print(FontColor.RESET,"انتهت محاولاتك!")
-                print("الكلمة كانت ",FontColor.YELLOW + word + FontColor.RESET,"... حظ أوفر")
+            if trys == tries:
+                print(FontColor.RESET, "انتهت محاولاتك!")
+                print("الكلمة كانت ", FontColor.YELLOW + word + FontColor.RESET, "... حظ أوفر")
                 break
 
             if guess == word:
@@ -139,5 +122,4 @@ def start_play():
 
 
 if __name__ == '__main__':
-    # main()
     start_play()
