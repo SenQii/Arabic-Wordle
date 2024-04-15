@@ -11,7 +11,7 @@ class FontColor:
     CYAN = '\033[36m'
     WHITE = '\033[37m'
     GREY = '\33[90m'
-    RESET = '\033[39m'
+    RESET = '\033[0m'
 
 
 class BG:
@@ -24,15 +24,6 @@ class BG:
     CYAN = '\033[46m'
     WHITE = '\033[47m'
     RESET = '\033[49m'
-
-
-class Style:
-    BRIGHT = '\033[1m'
-    DIM = '\033[2m'
-    NORMAL = '\033[22m'
-    RESET_ALL = '\033[0m'
-    UNDERLINE = '\033[4m'
-    RESET = '\033[0m'
 
 
 last_word = ""
@@ -49,18 +40,17 @@ words_length = {
 
 def select_length():
     print("****************************************************************")
-    print("أهلا بك في ووردل. \nلبدء اللعبة، أولًا عليك اختيار طول الكلمة السرية:")
-    print("من 4-5 ... اختر طول الكلمة السرية المناسب وادخل الرقم:")
-
+    print("أهلا بك في ووردل."
+          "\nلبدء اللعبة، أولًا عليك اختيار طول الكلمة السرية (4-6):")
     x = True
 
     while x:
         user_length = input()
         if not user_length.isdigit():
-            print("ony type numbers!!")
+            print("أدخل أرقام فقط")
             continue
         if int(user_length) > 6 or int(user_length) < 4:
-            print(" from 4-6 only")
+            print("ادخل من 4-6 فقط")
             continue
 
         return user_length
@@ -80,7 +70,7 @@ def read_word():
 def run(word):
     trys = 1
     while can_attempt:
-        print(Style.RESET_ALL + "===========================")
+        print(FontColor.RESET + "===========================")
         print(f"المحاولة {trys}")
         guess = input()
 
@@ -110,11 +100,18 @@ def run(word):
                 break
 
             if guess == word:
-                print(Style.RESET + "\U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973")
-                print(FontColor.BLUE + "كفو!!!")
+                print(FontColor.RESET + "\U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973")
+                print(FontColor.BLUE + "كفو!!!", FontColor.RESET)
 
                 break
 
+    print("اكتب 1 للعب مرة أخرى أو 0 للإلغاء")
+    ثانية = input()
+
+    if (ثانية == 1 ):
+        run(word)
+    else:
+        return
 
 def start_play():
     word = read_word()
