@@ -106,9 +106,9 @@ def run(word):
                 break
 
     print("اكتب 1 للعب مرة أخرى أو 0 للإلغاء")
-    ثانية = input()
+    replay = input()
 
-    if (ثانية == 1 ):
+    if (replay == 1 ):
         run(word)
     else:
         return
