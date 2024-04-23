@@ -19,9 +19,9 @@ class FontColor:
 LAST_WORD = ""
 TRIES = 5
 words_length = {
-    "4": "four.txt",
-    "5": "five.txt",
-    "6": "six.txt"
+    "4": "./words/four.txt",
+    "5": "./words/five.txt",
+    "6": "./words/six.txt"
 }
 
 
@@ -91,16 +91,17 @@ def run(word):
         print()
         attempt += 1  # TO THE NEXT TRY
 
-        #  LOSE
-        if attempt == TRIES:
-            print(FontColor.RESET, "انتهت محاولاتك!")
-            print("الكلمة كانت ", FontColor.YELLOW + word + FontColor.RESET, "... حظ أوفر")
-            break
         #  WIN
         if guess == word:
             print(FontColor.RESET + "\U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973")
             print(FontColor.BLUE + "كفو!!!", FontColor.RESET)
 
+            break
+
+        #  LOSE
+        if attempt == TRIES:
+            print(FontColor.RESET, "انتهت محاولاتك!")
+            print("الكلمة كانت ", FontColor.YELLOW + word + FontColor.RESET, "... حظ أوفر")
             break
 
     print("اكتب 1 للعب جولة أخرى")
