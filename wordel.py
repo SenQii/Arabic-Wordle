@@ -1,6 +1,7 @@
 import random
 
 
+# ASCII codes for colored op
 class FontColor:
     BLACK = '\033[30m'
     RED = '\033[31m'
@@ -14,23 +15,9 @@ class FontColor:
     RESET = '\033[0m'
 
 
-class BG:
-    BLACK = '\033[40m'
-    RED = '\033[41m'
-    GREEN = '\033[42m'
-    YELLOW = '\033[43m'
-    BLUE = '\033[44m'
-    MAGENTA = '\033[45m'
-    CYAN = '\033[46m'
-    WHITE = '\033[47m'
-    RESET = '\033[49m'
-
-
-last_word = ""
-tries = 5
-can_attempt = True
-
-
+# globals
+LAST_WORD = ""
+TRIES = 5
 words_length = {
     "4": "four.txt",
     "5": "five.txt",
@@ -38,17 +25,19 @@ words_length = {
 }
 
 
+#  prompt user to select word length
 def select_length():
-    print("****************************************************************")
-    print("أهلا بك في ووردل."
-          "\nلبدء اللعبة، أولًا عليك اختيار طول الكلمة السرية (4-6):")
-    x = True
+    print("لبدء اللعبة، أولًا عليك اختيار طول الكلمة السرية (4-6):")
 
-    while x:
+    while True:
         user_length = input()
+
+        # case: non digit inp
         if not user_length.isdigit():
             print("أدخل أرقام فقط")
             continue
+
+        # case: out of range inpt
         if int(user_length) > 6 or int(user_length) < 4:
             print("ادخل من 4-6 فقط")
             continue
@@ -56,64 +45,77 @@ def select_length():
         return user_length
 
 
+# get the selected length => read file => return random word
 def read_word():
-    # global last_word
     words_file = select_length()
+    file_name = words_length.get(words_file, "five.txt")  # "five" as default in case err
 
-    with open(words_length.get(words_file)) as f:
-        words = f.read().splitlines()
+    with open(file_name) as selected_file:
+        words = selected_file.read().splitlines()
         new_word = random.choice(words)
+
         return new_word
 
 
-# user has 6 hearts
+# main func | user guess till attempts run out \ won
 def run(word):
-    trys = 1
-    while can_attempt:
-        print(FontColor.RESET + "===========================")
-        print(f"المحاولة {trys}")
-        guess = input()
+    attempt = 1
 
-        # check for guess length & lang
+    while True:
+        print(FontColor.RESET + "===========================")
+        print(f"المحاولة {attempt}")
+        guess = input()  # every loop take users guess
+
+        # case: umatched input length
         if len(guess) != len(word):
             print("الأطوال غير متطابقة")
             continue
-        else:
-            for letter in range(min(len(guess), 5)):
-                if guess[letter] == word[letter]:
-                    print(FontColor.GREEN + guess[letter], end="")
-                    continue
 
-                elif guess[letter] in word:
-                    print(FontColor.YELLOW + guess[letter], end="")
+        # for every letter
+        for letter in range(len(guess)):
 
-                    continue
+            # case: right letter & right place:
+            if guess[letter] == word[letter]:
+                print(FontColor.GREEN + guess[letter], end="")
+                continue
 
-                else:
-                    print(FontColor.GREY + guess[letter], end="")
-            print()
-            trys += 1
+            # case: right letter but wrong place:
+            elif guess[letter] in word:
+                print(FontColor.YELLOW + guess[letter], end="")
+                continue
 
-            if trys == tries:
-                print(FontColor.RESET, "انتهت محاولاتك!")
-                print("الكلمة كانت ", FontColor.YELLOW + word + FontColor.RESET, "... حظ أوفر")
-                break
+            # case wrong letter
+            else:
+                print(FontColor.GREY + guess[letter], end="")
 
-            if guess == word:
-                print(FontColor.RESET + "\U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973")
-                print(FontColor.BLUE + "كفو!!!", FontColor.RESET)
+        print()
+        attempt += 1  # TO THE NEXT TRY
 
-                break
+        #  LOSE
+        if attempt == TRIES:
+            print(FontColor.RESET, "انتهت محاولاتك!")
+            print("الكلمة كانت ", FontColor.YELLOW + word + FontColor.RESET, "... حظ أوفر")
+            break
+        #  WIN
+        if guess == word:
+            print(FontColor.RESET + "\U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973 \U0001F973")
+            print(FontColor.BLUE + "كفو!!!", FontColor.RESET)
 
-    print("اكتب 1 للعب مرة أخرى أو 0 للإلغاء")
+            break
+
+    print("اكتب 1 للعب جولة أخرى")
     replay = input()
 
-    if (replay == 1 ):
-        run(word)
+    if replay == "1":
+        start_play()
     else:
         return
 
+
 def start_play():
+    print("****************************************************************")
+    print("أهلا بك في ووردل.")
+
     word = read_word()
     run(word)
 
