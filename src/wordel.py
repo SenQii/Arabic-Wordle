@@ -19,9 +19,9 @@ class FontColor:
 LAST_WORD = ""
 TRIES = 5
 words_length = {
-    "4": "./words/four.txt",
-    "5": "./words/five.txt",
-    "6": "./words/six.txt"
+    4: "./words/four.txt",
+    5: "./words/five.txt",
+    6: "./words/six.txt"
 }
 
 
@@ -37,8 +37,9 @@ def select_length():
             print("أدخل أرقام فقط")
             continue
 
+        user_length = int(user_length)
         # case: out of range inpt
-        if int(user_length) > 6 or int(user_length) < 4:
+        if user_length > 6 or user_length < 4:
             print("ادخل من 4-6 فقط")
             continue
 
@@ -48,7 +49,7 @@ def select_length():
 # get the selected length => read file => return random word
 def read_word():
     words_file = select_length()
-    file_name = words_length.get(words_file, "five.txt")  # "five" as default in case err
+    file_name = words_length.get(words_file, "./words/five.txt")  # "five" as default in case err
 
     with open(file_name) as selected_file:
         words = selected_file.read().splitlines()
@@ -89,7 +90,6 @@ def run(word):
                 print(FontColor.GREY + guess[letter], end="")
 
         print()
-        attempt += 1  # TO THE NEXT TRY
 
         #  WIN
         if guess == word:
@@ -103,6 +103,8 @@ def run(word):
             print(FontColor.RESET, "انتهت محاولاتك!")
             print("الكلمة كانت ", FontColor.YELLOW + word + FontColor.RESET, "... حظ أوفر")
             break
+
+        attempt += 1  # TO THE NEXT TRY
 
     print("اكتب 1 للعب جولة أخرى")
     replay = input()
@@ -121,5 +123,3 @@ def start_play():
     run(word)
 
 
-if __name__ == '__main__':
-    start_play()
